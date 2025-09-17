@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>حساب العمر بالهجرى و الميلادى</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+     h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #333;
+    }
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #4facfe;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #00c6ff;
+    }
+     .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+      font-weight: 500;
+    }
+    .result p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>حساب العمر</h1>
+    <input type="date" id="birthdate">
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const birthdateInput = document.getElementById("birthdate").value;
+      if (!birthdateInput) {
+        document.getElementById("result").innerHTML = "<p>Please select your birthdate.</p>";
+        return;
+      }
+        const today = new Date();
+      const birthDate = new Date(birthdateInput);
+
+      // Calculate Gregorian age
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+      if (ageDays < 0) {
+        ageMonths--;
+        ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+       // Convert to Hijri (approximate: 1 Hijri year = 354.367 days)
+      const diffTime = today - birthDate;
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      const hijriYears = Math.floor(diffDays / 354.367);
+      const hijriMonths = Math.floor((diffDays % 354.367) / 29.53);
+
+      // Display results
+      document.getElementById('result').innerHTML =
+   ` <strong>Gregorian:</strong> ${ageYears} years, ${ageMonths} months, ${ageDays} days<br>
+     <strong>Hijri (approx):</strong> ${hijriYears} years, ${hijriMonths} months`;
+};
+  </script>
+</body>
+</html>
